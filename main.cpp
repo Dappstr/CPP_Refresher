@@ -4,6 +4,7 @@
 #include <memory>
 
 template <typename T>
+requires std::is_move_constructible_v<T> && std::is_copy_constructible_v<T>
 class Stack
 {
     private:
