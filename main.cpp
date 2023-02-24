@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 template <typename T>
 class Stack
@@ -54,6 +55,10 @@ class Stack
             return m_stack.back();
         }
 
+        bool empty() {
+            return m_stack.empty();
+        }
+
         T operator[](size_t index) noexcept(noexcept(index >= 0)) {
             return m_stack.at(index);
         }
@@ -75,16 +80,31 @@ class Stack
             }
         }
 
+        bool operator==(Stack<T>& rhs) {
+            return std::equal(m_stack.begin(), m_stack.end(), rhs.m_stack.begin(), rhs.m_stack.end());
+            //assert(m_stack.size() == rhs.size());
+
+            /*
+            Manual way
+            if(m_stack.size() != rhs.size()) { return false;}
+
+            for(size_t i = 0; i < m_stack.size(); ++i) {
+                if(m_stack[i] != rhs[i]) { return false;}
+            }
+            
+            return true;
+            */
+        }
+
         ~Stack() = default;
 };
 
 int main()
 {
     Stack<int> stack{2, 5, 3, 7, 8};
-    std::cout << stack << '\n';
+    Stack<int> stack2{1, 2, 3, 4, 5};
 
-    const Stack<int> stack2{2,5,1,6};
-    stack2.operator<<(stack2);
+    std::cout << std::boolalpha << (stack == stack2);
 
     return 0;
 }
