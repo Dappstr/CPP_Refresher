@@ -4,7 +4,7 @@
 #include <memory>
 
 template <typename T>
-requires std::is_move_constructible_v<T> && std::is_copy_constructible_v<T>
+requires std::is_move_constructible_v<std::decay_t<T>> && std::is_copy_constructible_v<std::decay_t<T>>
 class Stack
 {
     private:
@@ -34,12 +34,12 @@ class Stack
         Stack(const Stack& src) {
             std::copy(src.m_stack.begin(), src.m_stack.end(), std::back_inserter(m_stack));
         }
-        Stack<T>& operator=(const Stack& src) {
+        Stack& operator=(const Stack& src) {
             std::copy(src.m_stack.begin(), src.m_stack.end(), std::back_inserter(m_stack));
         }
 
         Stack(Stack&& src) = default;
-        Stack<T>& operator=(Stack&& src) = default;
+        Stack& operator=(Stack&& src) = default;
 
         inline size_t size() noexcept(noexcept(m_stack.size() >= 0)) { 
             return m_stack.size();
