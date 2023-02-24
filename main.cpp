@@ -57,23 +57,34 @@ class Stack
         T operator[](size_t index) noexcept(noexcept(index >= 0)) {
             return m_stack.at(index);
         }
-        friend std::ostream& operator<<(std::ostream& out, Stack& stack);
+
+        const T operator[](size_t index) const noexcept(noexcept(index >= 0)) {
+            return m_stack.at(index);
+        }
+
+        friend std::ostream& operator<<(std::ostream& out, Stack<T>& stack) {
+            for(size_t i = 0; i < static_cast<size_t>(stack.size()); ++i) {
+                out << stack[i] << ' ';
+            }
+            return out;
+        }
+
+        void operator<<(const Stack& stack) const {
+            for(size_t i = 0; i < static_cast<size_t>(m_stack.size()); ++i) {
+                std::cout << stack[i] << ' ';
+            }
+        }
 
         ~Stack() = default;
 };
-
-std::ostream& operator<<(std::ostream& out, Stack<int>& stack)
-{
-    for(auto i = 0; i < static_cast<int>(stack.size()); ++i) {
-        out << stack[i] << ' ';
-    }
-    return out;
-}
 
 int main()
 {
     Stack<int> stack{2, 5, 3, 7, 8};
     std::cout << stack << '\n';
+
+    const Stack<int> stack2{2,5,1,6};
+    stack2.operator<<(stack2);
 
     return 0;
 }
