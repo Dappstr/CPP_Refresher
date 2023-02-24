@@ -27,14 +27,18 @@ class Stack
                 m_stack.push_back(std::move(val));
             });
         }
-        explicit Stack(T val) {
+        Stack(T val) {
             m_stack.push_back(val);
         }
 
-        Stack(const Stack& src) = default;
-        Stack(Stack&& src) = default;
+        Stack(const Stack& src) {
+            std::copy(src.m_stack.begin(), src.m_stack.end(), std::back_inserter(m_stack));
+        }
+        Stack<T>& operator=(const Stack& src) {
+            std::copy(src.m_stack.begin(), src.m_stack.end(), std::back_inserter(m_stack));
+        }
 
-        Stack<T>& operator=(const Stack& src) = default;
+        Stack(Stack&& src) = default;
         Stack<T>& operator=(Stack&& src) = default;
 
         inline size_t size() noexcept(noexcept(m_stack.size() >= 0)) { 
