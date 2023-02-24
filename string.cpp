@@ -87,8 +87,8 @@ class String
             char combinedString[newSize+1];
             strcpy(combinedString, this->m_buffer);
             memcpy(combinedString + this->m_size, rhs.m_buffer, rhs.m_size);
+            combinedString[newSize+1] = '\0';
             String newString(combinedString);
-            newString.m_buffer[newSize+1] = '\0';
             return newString;
         }
 
