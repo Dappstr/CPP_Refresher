@@ -1,7 +1,3 @@
-#include <iostream>
-#include <cstring>
-#include <utility>
-
 class String
 {
     private:
@@ -94,6 +90,16 @@ class String
             String newString(combinedString);
             newString.m_buffer[newSize+1] = '\0';
             return newString;
+        }
+
+        String operator-(const String& rhs) {
+            assert(this->m_size > rhs.m_size); //Cannot have negative indecies. If the left hand side is less than the right hand side, a negative result will be returned.
+            auto newSize = this->m_size - rhs.m_size;
+            char newString[newSize+1];
+            memcpy(newString, this->m_buffer + rhs.m_size, newSize);
+            newString[newSize+1] = '\0';
+            String str(newString);
+            return str;
         }
 
         ~String() {
