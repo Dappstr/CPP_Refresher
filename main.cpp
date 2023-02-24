@@ -4,7 +4,14 @@
 #include <memory>
 
 template <typename T>
-requires std::is_move_constructible_v<std::decay_t<T>> && std::is_copy_constructible_v<std::decay_t<T>>
+concept acceptableType =
+                        std::is_move_constructible_v<std::decay_t<T>> &&
+                        std::is_copy_constructible_v<std::decay_t<T>> && 
+                        std::is_copy_assignable_v<std::decay_t<T>> &&
+                        std::is_move_assignable_v<std::decay<T>>;
+
+template <acceptableType T>
+//requires std::is_move_constructible_v<std::decay_t<T>> && std::is_copy_constructible_v<std::decay_t<T>>
 class Stack
 {
     private:
