@@ -110,13 +110,3 @@ class Stack
 
         ~Stack() = default;
 };
-
-int main()
-{
-    Stack<int> stack{2, 5, 3, 7, 8};
-    Stack<int> stack2{1, 2, 3, 4, 5};
-
-    std::cout << std::boolalpha << (stack == stack2);
-
-    return 0;
-}
