@@ -15,9 +15,6 @@ class Vector {
         Vector(const Vector& vSource) = default;
         Vector(Vector&& vSource) = default;
 
-        Vector& operator=(const Vector& vSource) = default;
-        Vector& operator=(Vector&& vSource) = default;
-
         const size_t size() noexcept { return m_size; }
         auto begin() noexcept { return &m_buffer[0]; }
         auto end() noexcept { return &m_buffer[m_size-1]; }
@@ -42,6 +39,25 @@ class Vector {
             delete[] m_buffer;
             m_buffer = new T[m_size];
             memcpy(m_newBuff, m_buffer, m_size);
+        }
+
+        //Operators
+        Vector& operator=(const Vector& vSource) = default;
+        Vector& operator=(Vector&& vSource) = default;
+
+        std::ostream& operator << (std::ostream& out, Vector<T>& vSource) {
+            std::for_each(vSource.begin(), vSource.end(), [&vSource](const auto& element) -> void {
+                #if __cplusplus >= 201703L
+                if(std::is_pointer_v<T>) { out << *element << ' '; }
+                #endif
+
+                #if __cplusplus < 201703L
+                if(std::is_pointer<T>::value) { out << *elemennt << ' '; }
+                #endif
+
+                else { out << element << ' '; }
+            });
+            return out;
         }
 
         ~Vector() {
