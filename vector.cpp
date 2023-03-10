@@ -9,7 +9,7 @@ class Vector {
 
     public:
         Vector<T>(size_t n) {
-            m_buffer = new T[N];
+            m_buffer = new T[n];
         }
 
         Vector<T>(const Vector<T>& vSource) = default;
@@ -42,8 +42,8 @@ class Vector {
         }
 
         //Operators
-        Vector& operator=(const Vector& vSource) = default;
-        Vector& operator=(Vector&& vSource) = default;
+        Vector& operator=(const Vector<T>& vSource) = default;
+        Vector& operator=(Vector<T>&& vSource) = default;
 
         friend std::ostream& operator << (std::ostream& out, Vector<T>& vSource) {
             std::for_each(vSource.begin(), vSource.end(), [&vSource, &out](const auto& element) -> void {
