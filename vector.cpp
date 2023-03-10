@@ -12,13 +12,41 @@ class Vector {
             m_buffer = new T[N];
         }
 
-        size_t size() { return m_size; }
-        auto begin() { return &m_buffer[0]; }
-        auto end() { return &m_buffer[m_size-1]; }
+        Vector(const Vector& vSource) = default;
+        Vector(Vector&& vSource) = default;
+
+        Vector& operator=(const Vector& vSource) = default;
+        Vector& operator=(Vector&& vSource) = default;
+
+        const size_t size() noexcept { return m_size; }
+        auto begin() noexcept { return &m_buffer[0]; }
+        auto end() noexcept { return &m_buffer[m_size-1]; }
+
+        void insert(const auto& element) {
+            T* m_newBuff = new T[m_size+1];
+            memcpy(m_buffer, m_newBuff, m_size);
+            m_size += 1;
+            assert(m_size > 0);
+            m_newBuff[m_size] = element;
+            delete[] m_buffer;
+            m_buffer = new T[m_size];
+            memcpy(m_newBuff, m_buffer, m_size);
+        }
+
+        void insert(auto&& element) {
+            T* m_newBuff = new T[m_size+1];
+            memcpy(m_buffer, m_newBuff, m_size);
+            m_size += 1;
+            assert(m_size > 0);
+            m_newBuff[m_size] = std::move(element);
+            delete[] m_buffer;
+            m_buffer = new T[m_size];
+            memcpy(m_newBuff, m_buffer, m_size);
+        }
 
         ~Vector() {
             m_size = 0;
             delete[] m_buffer;
         }
 
-}
+};
