@@ -8,16 +8,16 @@ class Vector {
         size_t m_size {N};
 
     public:
-        Vector(size_t n) {
+        Vector<T>(size_t n) {
             m_buffer = new T[N];
         }
 
-        Vector(const Vector& vSource) = default;
-        Vector(Vector&& vSource) = default;
+        Vector<T>(const Vector<T>& vSource) = default;
+        Vector<T>(Vector<T>&& vSource) = default;
 
         const size_t size() noexcept { return m_size; }
-        auto begin() noexcept { return &m_buffer[0]; }
-        auto end() noexcept { return &m_buffer[m_size-1]; }
+        auto begin() noexcept(noexcept(m_size >= 0)) { return &m_buffer[0]; }
+        auto end() noexcept(noexcept(m_size >= 0)) { assert(m_size >= 0); return &m_buffer[m_size-1]; }
 
         void insert(const auto& element) {
             T* m_newBuff = new T[m_size+1];
@@ -45,8 +45,8 @@ class Vector {
         Vector& operator=(const Vector& vSource) = default;
         Vector& operator=(Vector&& vSource) = default;
 
-        std::ostream& operator << (std::ostream& out, Vector<T>& vSource) {
-            std::for_each(vSource.begin(), vSource.end(), [&vSource](const auto& element) -> void {
+        friend std::ostream& operator << (std::ostream& out, Vector<T>& vSource) {
+            std::for_each(vSource.begin(), vSource.end(), [&vSource, &out](const auto& element) -> void {
                 #if __cplusplus >= 201703L
                 if(std::is_pointer_v<T>) { out << *element << ' '; }
                 #endif
