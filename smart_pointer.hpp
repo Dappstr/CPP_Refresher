@@ -1,6 +1,12 @@
+// Requires C++17 support
+
 #include <iostream>
 #include <utility>
 #include <type_traits>
+
+#if __cplusplus < 201703L
+    #error "Invalid C++ standard, please use C++17 or later"
+#endif
 
 template <typename T, typename = void>
 class SmartPointer;
